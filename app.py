@@ -4,11 +4,14 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
 
+import os
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  
+app.secret_key = os.environ.get('SECRET_KEY', 'default_secret_key')
 
-
-client = MongoClient("mongodb://localhost:27017/")
+# MongoDB connection using environment variables for deployment
+mongo_uri = os.environ.get('MONGO_URI', "mongodb://localhost:27017/")
+client = MongoClient(mongo_uri)
 db = client.cricket_db
 players_collection = db.players
 users_collection = db.users  
