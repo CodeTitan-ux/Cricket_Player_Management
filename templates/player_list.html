@@ -14,76 +14,78 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
-            justify-content: center;
+            min-height: 100vh;
+            padding-bottom: 50px;
         }
 
         h1 {
             text-align: center;
-            
+            margin-top: 40px;
             margin-bottom: 40px;
             font-size: 36px;
-    color: #049ed1;
-    text-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
-
-}
-
-
-
+            color: #049ed1;
+            text-shadow: 1px 1px 20px rgba(0, 0, 0, 0.8);
+        }
 
         .container {
-            width: 90%;
-            max-width: 1200px;
-            background-color: rgba(255, 255, 255, 0.8);
+            width: 95%;
+            max-width: 1300px;
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
         }
 
-        .back-button {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s ease;
+        .table-wrapper {
+            max-height: 70vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            border: 2px solid #007bff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .back-button:hover {
-            background-color: #0056b3;
+        /* Custom Scrollbar */
+        .table-wrapper::-webkit-scrollbar {
+            width: 10px;
+        }
+        .table-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0 15px 15px 0;
+        }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
         }
 
         table {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 2px solid #007bff; 
-    border-radius: 15px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    width: 100%;
-}
+            border-collapse: collapse;
+            width: 100%;
+            background-color: transparent;
+        }
 
-th, td {
-    padding: 12px;
-    text-align: center;
-    font-size: 1em;
-    border-bottom: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6; 
-}
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1em;
+            border-bottom: 1px solid rgba(222, 226, 230, 0.5);
+        }
 
-th {
-    background-color: #007bff;
-    color: #fff;
-    text-transform: uppercase;
-    border-bottom: 2px solid #0056b3; 
-}
+        th {
+            background-color: #007bff;
+            color: #fff;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
 td {
     background-color: rgba(255, 255, 255, 0.9); 
@@ -107,35 +109,40 @@ td:last-child, th:last-child {
 
 
         
-        a button {
-            padding: 8px 12px;
+        td.actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            border-right: none;
+        }
+
+        button {
+            padding: 8px 15px;
             border: none;
             border-radius: 5px;
-            font-size: 1em;
+            font-size: 0.9em;
             cursor: pointer;
             color: #fff;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        a button[type="submit"] {
-            margin: 0 5px;
-        }
-
-    
-        a button:nth-child(1) {
+        .btn-update {
             background-color: #28a745;
         }
 
-        a button:nth-child(1):hover {
+        .btn-update:hover {
             background-color: #218838;
+            transform: translateY(-2px);
         }
 
-        a button:nth-child(2) {
+        .btn-delete {
             background-color: #dc3545;
         }
 
-        a button:nth-child(2):hover {
+        .btn-delete:hover {
             background-color: #c82333;
+            transform: translateY(-2px);
         }
 
         
@@ -177,35 +184,37 @@ td:last-child, th:last-child {
     <div class="container">
         <a href="{{ url_for('index') }}" class="back-button">Back to Home</a>
         <h1>Player's List</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Jersey Number</th>
-                    <th>Matches Played</th>
-                    <th>Wickets Taken</th>
-                    <th>Runs Scored</th>
-                    <th>Type of Player</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for player in players %}
-                <tr>
-                    <td data-label="Name">{{ player['name'] }}</td>
-                    <td data-label="Jersey Number">{{ player['jersey_number'] }}</td>
-                    <td data-label="Matches Played">{{ player['matches_played'] }}</td>
-                    <td data-label="Wickets Taken">{{ player['wickets_taken'] }}</td>
-                    <td data-label="Runs Scored">{{ player['runs_scored'] }}</td>
-                    <td data-label="Type of Player">{{ player['special_skill'] }}</td>
-                    <td>
-                        <a href="{{ url_for('update_player', player_id=player['_id']) }}"><button type="submit">Update</button></a>
-                        <a href="{{ url_for('delete_player', player_id=player['_id']) }}"><button type="submit">Delete</button></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Jersey No</th>
+                        <th>Matches</th>
+                        <th>Wickets</th>
+                        <th>Runs</th>
+                        <th>Skill</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr>
+                        <td data-label="Name"><strong>{{ player['name'] }}</strong></td>
+                        <td data-label="Jersey No">{{ player['jersey_number'] }}</td>
+                        <td data-label="Matches">{{ player['matches_played'] }}</td>
+                        <td data-label="Wickets">{{ player['wickets_taken'] }}</td>
+                        <td data-label="Runs">{{ player['runs_scored'] }}</td>
+                        <td data-label="Skill">{{ player['special_skill'] }}</td>
+                        <td class="actions">
+                            <a href="{{ url_for('update_player', player_id=player['_id']) }}"><button class="btn-update">Update</button></a>
+                            <a href="{{ url_for('delete_player', player_id=player['_id']) }}"><button class="btn-delete">Delete</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
